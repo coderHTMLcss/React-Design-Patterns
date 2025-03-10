@@ -1,35 +1,40 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import React from 'react';
+import axios from 'axios';
+import SingleTodoLoader from './shared/SingleTodoLoader';
+import TodoList from './components/TodoList';
+import ResourceLoader from './shared/ResourceLoader';
+import CommentsList from './components/CommentsList';
+import DataSource from './components/DataSource';
 
-function App() {
-  const [count, setCount] = useState(0)
-
-  return (
-    <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
+const getServerData = async (url: string) => {
+  const responce = await axios.get(url);
+  return responce.data
 }
 
-export default App
+const App = () => {
+  return (
+    <div>
+      <DataSource
+        getDataFunc={() => getServerData(
+          "https://jsonplaceholder.typicode.com/todos/1"
+        )}
+        resourceName="todo"
+      >
+        <TodoList />
+      </DataSource>
+
+      <br />
+
+      <DataSource
+        getDataFunc={() => getServerData(
+          "https://jsonplaceholder.typicode.com/comments/1"
+        )}
+        resourceName="comments"
+      >
+        <CommentsList />
+      </DataSource>
+    </div>
+  );
+};
+
+export default App;
