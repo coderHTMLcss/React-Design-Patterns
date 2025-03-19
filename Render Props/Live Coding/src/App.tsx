@@ -1,11 +1,11 @@
-import React from 'react'
+import Counter from './components/Counter'
 
 const App = () => {
   return (
     <div>
-      App
+      <Counter render={(counter: number) => <p>The current count is: {counter}</p>} />
     </div>
-  )
-}
+  );
+};
 
-export default App
+export default App;
